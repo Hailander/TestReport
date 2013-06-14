@@ -16,24 +16,50 @@
 
 void doprocessing (int sock)
 {
-    int n,x;
-    char buffer[256];
-	char rfc[100];
+    int i;
+	char x[2] = {'%','%'};
+    char buffer[100];
+	char rfc[100],*aux,myString[100];
+	FILE *file;
+	int length;
+	
 
-    memset(&(buffer), '0', 256);
+    memset(buffer, 0, sizeof(buffer));
     int recvMsgSize;
     
     /* Receive message from client */
     if ((recvMsgSize = recv(sock, buffer, 256, 0)) < 0)
         perror("ERROR reading to socket");
 		
-	for(x=0;x<recvMsgSize;x++)
+	for(i=0; i< sizeof(buffer); i++)
 	{
-		rfc[x]=buffer[x]; 
+		rfc[i]=buffer[i]; 
 		
 	}
-		printf("%s\n",rfc);
-	fflush(stdin);
+		printf("Checkig RFC retrieved:  %s\n",rfc);
+	
+
+
+	file=fopen("C:\\Users\\usuario\\Documents\\GitHub\\GDL\\workshop-gdl\\workshop\\credit-bureau\\src\\c\\Loans.txt","r");
+	
+	if(file == NULL)
+		perror("Error Opening File");
+
+	else{
+		while(!feof(file))
+	{
+		aux=fgets(myString,sizeof(myString),file);//retrieves a line from Loans.txt and reads as string
+		length=strlen(myString); //Calculates line length retrieved from Loans.txt
+		if(strstr(myString,rfc)) //fetch rfc string into myString string
+		{
+			puts(aux); //just for test lines retrieved
+			send(sock,aux,length,0); // sends line retrieved to socket buffer
+			}
+			memset(myString,0,sizeof(myString)); //clean up myString string to be ready for retreive a new line
+	}
+		send(sock,x,sizeof(x),0); // send to socket buffer a char sequence '%%'
+		fclose(file);
+		}
 	
 
     /* Send received string and receive again until end of transmission */
@@ -95,6 +121,7 @@ int main()
 	 initW32(); /* Necesaria para compilar en Windows */ 
 	 	
    int fd, fd2; /* los descriptores de archivos */
+   //char buff[100];
 
    /* para la información de la dirección del servidor */
    struct sockaddr_in server;
@@ -145,10 +172,11 @@ int main()
 
       printf("Se obtuvo una conexión desde %s\n", inet_ntoa(client.sin_addr) );
       /* que mostrará la IP del cliente */
-
+		
       send(fd2,"Bienvenido a mi servidor.\n",256,0);
       /* que enviará el mensaje de bienvenida al cliente */
-      
+      //recv(fd2, buff, 100, 0);
+	  //printf("Checiking buff:   %s", buff);
       doprocessing(fd2);
 
    } /* end while */

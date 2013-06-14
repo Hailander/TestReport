@@ -28,7 +28,8 @@ public class Cliente{
             BufferedReader dat = new BufferedReader(stream);
             PrintWriter pw = new PrintWriter(out);
             String read = reader.readLine();
-            pw.print("HOLA");
+            
+            pw.print("23456ABCDE");
             pw.flush();
             //System.out.println("output" + read);
             
@@ -40,7 +41,7 @@ public class Cliente{
             int count = red.read(buffer,0,300);
             String reply = new String(buffer,0,count);
             String lin = reader.readLine();
-            System.out.println("input" + reply);
+            System.out.println("input" +"\n"+ reply);
             
             s.close();
             reader.close();
