@@ -18,12 +18,15 @@
 					<br/>
 						<label>Operation:</label>
 							<select name="transporte">
-								<option value="pay">Payment</option>
-								<option value="loan">Get a new loan</option>
-								<option value="close">Close loan</option>
+								<option value="Get a new loan">Get a new loan</option>
+								<option value="Payment">Payment</option>
+								<option value="Close loan">Close loan</option>
+								<option value="Display">Display</option> 
 							</select>
+							
 							<br>
 							<br>
+							
 							<br>
 								<input type=submit value="SUBMIT"/>
 								
